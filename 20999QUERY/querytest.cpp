@@ -34,11 +34,16 @@ void QUERYTEST::on_pushButton_clicked()
                           defaultBtn);
     if (result==QMessageBox::Yes)
     {
+        nAddrLen_send = sizeof(send_Data_Addr);
         memset(mSendBuff,0x00,1024);
         recvbuff = new unsigned char[1024 * 1024];
         memset(recvbuff,0x00,1024 * 1024);
         sendbuff = new unsigned char[1024 * 1024];
         memset(sendbuff,0x00,1024 * 1024);
+        DataClassID = a;
+        ObjectID = b;
+        AttributeID = c;
+        ElementID = d;
         UDPT->Crc16_h(DataClassID,ObjectID,AttributeID,ElementID,mSendBuff,SBuffLen);
         sendbuff[nSendBuffLen++] = 0x7E;
         memcpy(sendbuff+nSendBuffLen,mSendBuff,SBuffLen);
@@ -58,7 +63,8 @@ void QUERYTEST::on_pushButton_clicked()
         else
         {
             QString str1 = "send success and len is ";
-            QString str = str1 + len;
+            QString sLen = QString::number(len);
+            QString str = str1 + sLen;
             ui->textEdit->append(str);
             //cout<<"send success and len is "<<len<<endl;
         }
@@ -150,23 +156,23 @@ void QUERYTEST::on_lineEdit_6_textEdited(const QString &arg1)
 void QUERYTEST::on_lineEdit_textEdited(const QString &arg1)
 {
     a = arg1.toInt();
-    DataClassID = a;
+    //DataClassID = a;
 }
 
 void QUERYTEST::on_lineEdit_2_textEdited(const QString &arg1)
 {
     b = arg1.toInt();
-    ObjectID = b;
+    //ObjectID = b;
 }
 
 void QUERYTEST::on_lineEdit_4_textEdited(const QString &arg1)
 {
     c = arg1.toInt();
-    AttributeID = c;
+    //AttributeID = c;
 }
 
 void QUERYTEST::on_lineEdit_3_textEdited(const QString &arg1)
 {
     d = arg1.toInt();
-    ElementID = d;
+    //ElementID = d;
 }
