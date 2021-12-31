@@ -34,6 +34,8 @@ private slots:
 
     void on_lineEdit_3_textEdited(const QString &arg1);
 
+    void on_pushButton_4_clicked();
+
 private:
     Ui::QUERYTEST *ui;
     UDPClient *UDPT = new UDPClient();
@@ -52,13 +54,14 @@ private:
 
     int	len = 0;
     int recvlen = 0;
-    unsigned int nSendBuffLen = 0;
-    unsigned int SBuffLen = 0;
-    unsigned int SendBuffLen = 0;
+    unsigned int nSendBuffLen;
+    unsigned int SBuffLen;
+    unsigned int SendBuffLen;
     unsigned char DataClassID = 0;	//数据类ID
     unsigned char ObjectID = 0;		//对象ID
     unsigned char AttributeID = 0;	//属性ID
     unsigned char ElementID = 0;	//元素ID
     unsigned char mSendBuff[1024];
+    QString strBuffer;
 };
 #endif // QUERYTEST_H

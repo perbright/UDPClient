@@ -27,9 +27,12 @@ HEADERS += \
 FORMS += \
     querytest.ui
 
-LIBS += -lWs2_32
+#LIBS += -lWs2_32
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+LIBS += -lws2_32
+RC_FILE = logo.rc

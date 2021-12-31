@@ -40,46 +40,46 @@ unsigned short UDPClient::Crc16(const unsigned char *buffer, int buffer_length)
 void UDPClient::Crc16_h(unsigned char nDataClassID, unsigned char nObjectID, unsigned char nAttributeID, unsigned char nElementID, unsigned char *sendtempbuff, unsigned int &BuffLen)
 {
     unsigned char FrameID;
-        unsigned short nCrc16;
-        unsigned char m_chSendBuff[1024];
-        unsigned int dwSendBuffLen;
-        unsigned int dwTempSendBuffLen;
-        memset(m_chSendBuff,0x00,1024);
-        dwSendBuffLen = 0;
-        FrameID = 0x01;
+    unsigned short nCrc16;
+    unsigned char m_chSendBuff[1024];
+    unsigned int dwSendBuffLen;
+    unsigned int dwTempSendBuffLen;
+    memset(m_chSendBuff,0x00,1024);
+    dwSendBuffLen = 0;
+    FrameID = 0x01;
 
-        m_chSendBuff[dwSendBuffLen++] = 0x00;
-        m_chSendBuff[dwSendBuffLen++] = 0x00;
-        m_chSendBuff[dwSendBuffLen++] = 0x01;
-        m_chSendBuff[dwSendBuffLen++] = 0x01;
-        m_chSendBuff[dwSendBuffLen++] = HOST_ID;
-        m_chSendBuff[dwSendBuffLen++] = 0x00;
-        m_chSendBuff[dwSendBuffLen++] = 0x00;
-        m_chSendBuff[dwSendBuffLen++] = 0x00;
-        m_chSendBuff[dwSendBuffLen++] = 0x00;
-        m_chSendBuff[dwSendBuffLen++] = ROAD_ID;
-        m_chSendBuff[dwSendBuffLen++] = FrameID;
+    m_chSendBuff[dwSendBuffLen++] = 0x00;
+    m_chSendBuff[dwSendBuffLen++] = 0x00;
+    m_chSendBuff[dwSendBuffLen++] = 0x01;
+    m_chSendBuff[dwSendBuffLen++] = 0x01;
+    m_chSendBuff[dwSendBuffLen++] = HOST_ID;
+    m_chSendBuff[dwSendBuffLen++] = 0x00;
+    m_chSendBuff[dwSendBuffLen++] = 0x00;
+    m_chSendBuff[dwSendBuffLen++] = 0x00;
+    m_chSendBuff[dwSendBuffLen++] = 0x00;
+    m_chSendBuff[dwSendBuffLen++] = ROAD_ID;
+    m_chSendBuff[dwSendBuffLen++] = FrameID;
 
-        //查询
-        m_chSendBuff[dwSendBuffLen++] = FRAME_TYPE_QUERY;
-        m_chSendBuff[dwSendBuffLen++] = 0x01;
-        m_chSendBuff[dwSendBuffLen++] = 0x01;
-        m_chSendBuff[dwSendBuffLen++] = 0x04;
-        m_chSendBuff[dwSendBuffLen++] = nDataClassID;
-        m_chSendBuff[dwSendBuffLen++] = nObjectID;
-        m_chSendBuff[dwSendBuffLen++] = nAttributeID;
-        m_chSendBuff[dwSendBuffLen++] = nElementID;
+    //查询
+    m_chSendBuff[dwSendBuffLen++] = FRAME_TYPE_QUERY;
+    m_chSendBuff[dwSendBuffLen++] = 0x01;
+    m_chSendBuff[dwSendBuffLen++] = 0x01;
+    m_chSendBuff[dwSendBuffLen++] = 0x04;
+    m_chSendBuff[dwSendBuffLen++] = nDataClassID;
+    m_chSendBuff[dwSendBuffLen++] = nObjectID;
+    m_chSendBuff[dwSendBuffLen++] = nAttributeID;
+    m_chSendBuff[dwSendBuffLen++] = nElementID;
 
-        dwTempSendBuffLen = dwSendBuffLen;
-        short nPacketLen = htons(dwTempSendBuffLen);
-        memcpy(m_chSendBuff, &nPacketLen, 2);
+    dwTempSendBuffLen = dwSendBuffLen;
+    short nPacketLen = htons(dwTempSendBuffLen);
+    memcpy(m_chSendBuff, &nPacketLen, 2);
 
-        nCrc16 = Crc16(m_chSendBuff, dwSendBuffLen);
-        nCrc16 = htons(nCrc16);
-        memcpy(m_chSendBuff + dwSendBuffLen, &nCrc16, 2);
-        dwSendBuffLen += 2;
-        memcpy(sendtempbuff,m_chSendBuff,dwSendBuffLen);
-        BuffLen = dwSendBuffLen;
+    nCrc16 = Crc16(m_chSendBuff, dwSendBuffLen);
+    nCrc16 = htons(nCrc16);
+    memcpy(m_chSendBuff + dwSendBuffLen, &nCrc16, 2);
+    dwSendBuffLen += 2;
+    memcpy(sendtempbuff,m_chSendBuff,dwSendBuffLen);
+    BuffLen = dwSendBuffLen;
 }
 
 QString UDPClient::hexToString(unsigned char *in, int len)
