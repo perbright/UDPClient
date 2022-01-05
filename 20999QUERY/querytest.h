@@ -2,7 +2,9 @@
 #define QUERYTEST_H
 
 #include <QMainWindow>
-#include"UDP20999.h"
+#include "UDP20999.h"
+#include "QDateTime"
+#include "recvthread.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class QUERYTEST; }
@@ -63,5 +65,6 @@ private:
     unsigned char ElementID = 0;	//元素ID
     unsigned char mSendBuff[1024];
     QString strBuffer;
+    RecvThread *recvthread;
 };
 #endif // QUERYTEST_H

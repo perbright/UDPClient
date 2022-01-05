@@ -18,11 +18,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     UDP20999.cpp \
     main.cpp \
-    querytest.cpp
+    querytest.cpp \
+    recvthread.cpp
 
 HEADERS += \
     UDP20999.h \
-    querytest.h
+    querytest.h \
+    recvthread.h
 
 FORMS += \
     querytest.ui

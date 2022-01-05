@@ -11,7 +11,6 @@ UDPClient::~UDPClient()
 
 unsigned short UDPClient::Crc16(const unsigned char *buffer, int buffer_length)
 {
-    short usRc = 0;
     unsigned char i = 0;
     short usCrc16 = 0x0000;
     while (buffer_length--)

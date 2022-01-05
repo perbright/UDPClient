@@ -2,6 +2,7 @@
 #include "ui_querytest.h"
 #include "QMessageBox"
 #include "QDateTime"
+#include "recvthread.h"
 
 QUERYTEST::QUERYTEST(QWidget *parent)
     : QMainWindow(parent)
@@ -21,7 +22,11 @@ void QUERYTEST::on_pushButton_2_clicked()
 {
    if(QMessageBox::Yes == QMessageBox::question(this, "20999查询","确认要退出查询吗？"))
    {
-        close();
+       recvthread->closeThread();
+       recvthread->wait();
+       closesocket(sClient);
+       WSACleanup();
+       close();
    }
 }
 
@@ -68,9 +73,9 @@ void QUERYTEST::on_pushButton_clicked()
             ui->textEdit->append(strBuffer);
             //ui->textEdit->append("send error!");
             //cout<<"send error!"<<endl;
-            closesocket(sClient);
-            WSACleanup();
-            Sleep(1000);
+            //closesocket(sClient);
+            //WSACleanup();
+            Sleep(100);
         }
         else
         {
@@ -89,7 +94,7 @@ void QUERYTEST::on_pushButton_clicked()
             ui->textEdit->append(strBuffer);
             //cout<<"send success and len is "<<len<<endl;
         }
-        recvlen = recvfrom(sClient, (char *)recvbuff, 1024, 0,(struct sockaddr*)&send_Data_Addr,&nAddrLen_send);
+        /*recvlen = recvfrom(sClient, (char *)recvbuff, 1024, 0,(struct sockaddr*)&send_Data_Addr,&nAddrLen_send);
         if (SOCKET_ERROR == recvlen)
         {
             QString strp;
@@ -103,24 +108,27 @@ void QUERYTEST::on_pushButton_clicked()
             ui->textEdit->append(strBuffer);
             //ui->textEdit->append("recv error!");
             //cout<<"recv error!"<<endl;
-            closesocket(sClient);
-            WSACleanup();
-            Sleep(1000);
+            //closesocket(sClient);
+            //WSACleanup();
+            Sleep(100);
         }
-        QString strResult;
-        QString strp;
-        QDateTime time;
-        strBuffer.clear();
-        time = QDateTime::currentDateTime();
-        strp = time.toString("(yyyy-MM-dd hh:mm:ss)");
-        strBuffer.append(strp);
-        strBuffer.append(0x20);
-        strResult = UDPT->hexToString(recvbuff,recvlen);
-        strBuffer = strBuffer + ":" + strResult;
-        ui->textEdit->append(strBuffer);
-        //ui->textEdit->append(strResult);
+        else
+        {
+            QString strResult;
+            QString strp;
+            QDateTime time;
+            strBuffer.clear();
+            time = QDateTime::currentDateTime();
+            strp = time.toString("(yyyy-MM-dd hh:mm:ss)");
+            strBuffer.append(strp);
+            strBuffer.append(0x20);
+            strResult = UDPT->hexToString(recvbuff,recvlen);
+            strBuffer = strBuffer + ":" + strResult;
+            ui->textEdit->append(strBuffer);
+            //ui->textEdit->append(strResult);
+        }*/
         delete[] sendbuff;
-        delete[] recvbuff;
+        //delete[] recvbuff;
     }
     else if(result==QMessageBox::No)
     {
@@ -225,6 +233,11 @@ void QUERYTEST::on_pushButton_3_clicked()
             //ui->textEdit->append("Client UDP Socket bind IP & Port !");
             //cout << "Client UDP Socket bind IP & Port !" << endl;
         }
+        //RecvThread *recvthread = new RecvThread;
+        recvthread = new RecvThread;
+        recvthread->textEdit = ui->textEdit;
+        recvthread->getSock(sClient);
+        recvthread->start();
     }
 }
 
@@ -256,13 +269,13 @@ void QUERYTEST::on_lineEdit_2_textEdited(const QString &arg1)
 
 void QUERYTEST::on_lineEdit_4_textEdited(const QString &arg1)
 {
-    c = arg1.toInt();
+    d = arg1.toInt();
     //AttributeID = c;
 }
 
 void QUERYTEST::on_lineEdit_3_textEdited(const QString &arg1)
 {
-    d = arg1.toInt();
+    c = arg1.toInt();
     //ElementID = d;
 }
 
